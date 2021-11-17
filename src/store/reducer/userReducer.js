@@ -31,7 +31,10 @@ function userReducer(state = initialState, action) {
 			return {
 				...state,
 				authLoading: true,
-				isLogged: false
+				isLogged: false,
+				error: null,
+				errorCode: null,
+				errorMsg: null
 			};
 		case `${LOGIN_WITH_GOOGLE}_SUCCESS`:
 		case `${LOGIN_WITH_FACEBOOK}_SUCCESS`:
@@ -41,7 +44,10 @@ function userReducer(state = initialState, action) {
 				...state,
 				user: payload.user,
 				authLoading: false,
-				isLogged: true
+				isLogged: true,
+				error: null,
+				errorCode: null,
+				errorMsg: null
 			};
 		case `${LOGIN_WITH_GOOGLE}_ERROR`:
 		case `${LOGIN_WITH_FACEBOOK}_ERROR`:
@@ -52,6 +58,7 @@ function userReducer(state = initialState, action) {
 				user: null,
 				isLogged: false,
 				authLoading: false,
+				error: true,
 				errorCode: payload.errorCode,
 				errorMsg: payload.errorMsg
 			};
@@ -68,7 +75,6 @@ function userReducer(state = initialState, action) {
 				...state,
 				authLoading: false,
 				errorCode: payload.errorCode,
-				isLogged: true,
 				errorMsg: payload.errorMsg
 			};
 		case GET_USER: {

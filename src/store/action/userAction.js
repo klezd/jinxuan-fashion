@@ -1,5 +1,4 @@
-import firebase from 'firebase/compat/app';
-import { app } from '../../firebase-config';
+import '../../firebase-config';
 import {
 	getAuth,
 	createUserWithEmailAndPassword,
@@ -11,7 +10,8 @@ import {
 	FacebookAuthProvider,
 	signInWithPopup
 } from 'firebase/auth';
-// import { prepareUserObjToUploadFirebase } from '../../utils';
+import { getDatabase, ref, child, set, get } from 'firebase/database';
+import { prepareUserObjToUploadFirebase } from '../../utils';
 
 import {
 	LOGIN,
@@ -19,12 +19,12 @@ import {
 	LOGIN_WITH_FACEBOOK,
 	LOGOUT,
 	SIGNUP,
-	// ADD_USER_INFO,
-	// GET_USER_INFO,
+	ADD_USER_INFO,
+	GET_USER_INFO,
 	GET_USER
 } from '../types';
 
-export const signup = (email, password) => async (dispatch) => {
+export const signup = (displayName, email, password) => async (dispatch) => {
 	dispatch({
 		type: `${SIGNUP}_PENDING`
 	});
@@ -35,12 +35,18 @@ export const signup = (email, password) => async (dispatch) => {
 			.then((res) => {
 				// Signed in
 				const user = res.user;
+				console.log(user);
 				// const token = res._tokenResponse.refreshToken;
 				dispatch({
 					type: `${SIGNUP}_SUCCESS`,
 					payload: { user }
 				});
-
+				dispatch(
+					addUserInfo({
+						name: displayName,
+						email: user.email
+					})
+				);
 				return user;
 			})
 			.catch((error) => {
@@ -49,7 +55,7 @@ export const signup = (email, password) => async (dispatch) => {
 				console.error(errorCode, errorMessage);
 				dispatch({
 					type: `${SIGNUP}_ERROR`,
-					payload: { email, errorCode, errorMsg: errorMessage }
+					payload: { email, errorCode, errorMsg: 'Email is not available' }
 				});
 				return { email, errorCode, errorMsg: errorMessage };
 			});
@@ -81,7 +87,11 @@ export const signin = (email, password) => async (dispatch) => {
 				console.error(errorCode, errorMessage);
 				dispatch({
 					type: `${LOGIN}_ERROR`,
-					payload: { email, errorCode, errorMsg: errorMessage }
+					payload: {
+						email,
+						errorCode,
+						errorMsg: 'Email/ Password is incorrect'
+					}
 				});
 				return { email, errorCode, errorMsg: errorMessage };
 			});
@@ -89,22 +99,34 @@ export const signin = (email, password) => async (dispatch) => {
 };
 
 export const loginWithGoogleAction = () => async (dispatch) => {
-	const provider = new GoogleAuthProvider();
-	dispatch(loginWithExternalService(LOGIN_WITH_GOOGLE, provider));
+	dispatch(loginWithExternalService(LOGIN_WITH_GOOGLE, 'google'));
 };
 
 export const loginWithFacebookAction = () => async (dispatch) => {
-	const provider = new FacebookAuthProvider();
-	dispatch(loginWithExternalService(LOGIN_WITH_FACEBOOK, provider));
+	dispatch(loginWithExternalService(LOGIN_WITH_FACEBOOK, 'facebook'));
 };
 
-export const loginWithExternalService = (type, provider) => {
+export const loginWithExternalService = (type, platform) => {
+	let provider = null;
+	provider =
+		platform == 'google'
+			? new GoogleAuthProvider()
+			: platform == 'facebook' && new FacebookAuthProvider();
+
+	if (!provider) {
+		return (dispatch) => {
+			dispatch({
+				type: type + '_ERROR',
+				payload: { errorMsg: 'Provider is not supported' }
+			});
+		};
+	}
+
 	const auth = getAuth();
 	return async (dispatch) => {
 		dispatch({
 			type: `${type}_PENDING`
 		});
-		firebase.auth().useDeviceLanguage();
 		provider.setCustomParameters({
 			display: 'popup'
 		});
@@ -114,8 +136,15 @@ export const loginWithExternalService = (type, provider) => {
 				return signInWithPopup(auth, provider)
 					.then((result) => {
 						console.log(result);
+						console.log(provider);
 						// token for providers
-						const credential = provider.credentialFromResult(result);
+						let credential = null;
+						credential =
+							platform == 'google'
+								? GoogleAuthProvider.credentialFromResult(result)
+								: platform == 'facebook' &&
+								  FacebookAuthProvider.credentialFromResult(result);
+
 						const token = credential.accessToken;
 						// The signed-in user info.
 						const user = result.user;
@@ -127,18 +156,12 @@ export const loginWithExternalService = (type, provider) => {
 							}
 						});
 						// TODO
-						// const userInfo = result.additionalUserInfo;
-						// if (userInfo.isNewUser) {
-						// 	dispatch(
-						// 		addUserInfo(user.photoURL, {
-						// 			name: user.displayName,
-						// 			email: user.email,
-						// 			status: null
-						// 		})
-						// 	);
-						// } else {
-						// 	dispatch(getUserInfo(user.uid));
-						// }
+						dispatch(
+							addUserInfo({
+								name: user.displayName,
+								email: user.email
+							})
+						);
 
 						localStorage.clear();
 						localStorage.setItem('token', token);
@@ -148,32 +171,47 @@ export const loginWithExternalService = (type, provider) => {
 					.catch((error) => {
 						// Handle Errors here.
 						const errorCode = error.code;
-						const errorMessage = error.message;
+						console.error(error.message);
 						// The email of the user's account used.
 						const email = error.email;
 						// The AuthCredential type that was used.
-						const credential = provider.credentialFromError(error);
+						let credential = null;
+						credential =
+							platform == 'google'
+								? GoogleAuthProvider.credentialFromResult(error)
+								: platform == 'facebook' &&
+								  FacebookAuthProvider.credentialFromResult(error);
+
 						dispatch({
 							type: `${type}_ERROR`,
-							payload: { email, errorCode, errorMsg: errorMessage }
+							payload: {
+								email,
+								errorCode,
+								errorMsg: `Failed to login with ${platform}`
+							}
 						});
-						return { email, errorCode, errorMsg: errorMessage, credential };
+						return {
+							email,
+							errorCode,
+							errorMsg: `Failed to login with ${platform}`,
+							credential
+						};
 					});
 			})
 			.catch((error) => {
 				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
+				const errorCode = error.code;
+				console.error(error.message);
 				dispatch({
-					type: `${LOGIN_WITH_GOOGLE}_ERROR`,
-					payload: { errorCode, errorMsg: errorMessage }
+					type: `${type}_ERROR`,
+					payload: { errorCode, errorMsg: `Failed to login with ${platform}` }
 				});
-				return { errorCode, errorMsg: errorMessage };
+				return { errorCode, errorMsg: `Failed to login with ${platform}` };
 			});
 	};
 };
 
-export const logout = () => (dispatch) => {
+export const signout = () => (dispatch) => {
 	dispatch({
 		type: `${LOGOUT}_PENDING`
 	});
@@ -212,75 +250,85 @@ export const getUser = () => (dispatch) => {
 
 /**
  *
- * @param {Object} info = {name, email, url, status}
+ * @param {Object} info = {name, email}
  * @returns
  */
-// const infoDefault = { name: null, email: null, status: null };
-// export function addUserInfo(url = null, info = infoDefault) {
-// 	info['url'] = url;
-// 	const data = prepareUserObjToUploadFirebase(info);
-// 	return async (dispatch) => {
-// 		dispatch({
-// 			type: `${ADD_USER_INFO}_PENDING`
-// 		});
-// 		const userId = firebaseAuth.currentUser.uid;
-// 		firebaseDb.ref('/users/' + userId).update(data, (error) => {
-// 			if (error) {
-// 				dispatch({
-// 					type: `${ADD_USER_INFO}_ERROR`,
-// 					payload: { errorCode: error.code, errorMsg: error.message }
-// 				});
-// 			} else {
-// 				dispatch({
-// 					type: `${ADD_USER_INFO}_SUCCESS`,
-// 					payload: data
-// 				});
-// 			}
-// 			dispatch(getUserInfo());
-// 		});
-// 	};
-// }
+const infoDefault = { name: null, email: null };
+export function addUserInfo(info = infoDefault) {
+	const data = prepareUserObjToUploadFirebase(info);
+	return async (dispatch) => {
+		dispatch({
+			type: `${ADD_USER_INFO}_PENDING`
+		});
+		const auth = getAuth();
+		console.log(auth);
 
-// export const getUserInfo = (id) => (dispatch) => {
-// 	dispatch({
-// 		type: `${GET_USER_INFO}_PENDING`,
-// 		payload: { id }
-// 	});
+		const userId = auth.currentUser.uid;
+		const db = getDatabase();
 
-// 	let userId = id;
+		try {
+			set(ref(db, '/users/' + userId), data).then((r) => console.log(r));
+		} catch (error) {
+			dispatch({
+				type: `${ADD_USER_INFO}_ERROR`,
+				payload: { errorCode: error.code, errorMsg: error.message }
+			});
+		} finally {
+			dispatch({
+				type: `${ADD_USER_INFO}_SUCCESS`,
+				payload: data
+			});
+			dispatch(getUserInfo());
+		}
+	};
+}
 
-// 	const user = firebaseAuth.currentUser;
+export const getUserInfo = (id) => (dispatch) => {
+	dispatch({
+		type: `${GET_USER_INFO}_PENDING`,
+		payload: { id }
+	});
 
-// 	if (!userId && user) {
-// 		userId = user.uid;
-// 	}
+	let userId = id;
+	const auth = getAuth();
+	const user = auth.currentUser;
+	console.log(auth);
 
-// 	if (!userId) return;
+	userId = auth.currentUser.uid;
 
-// 	firebaseDb
-// 		.ref('/users/' + userId)
-// 		.get()
-// 		.then((snapshot) => {
-// 			if (snapshot.exists()) {
-// 				const data = snapshot.val();
-// 				dispatch({
-// 					type: `${GET_USER_INFO}_SUCCESS`,
-// 					payload: { data, userId }
-// 				});
-// 			} else {
-// 				dispatch({
-// 					type: `${GET_USER_INFO}_ERROR`,
-// 					payload: {
-// 						errorCode: 404,
-// 						errorMsg: 'User info not found or is not updated yet.'
-// 					}
-// 				});
-// 			}
-// 		})
-// 		.catch((error) => {
-// 			dispatch({
-// 				type: `${GET_USER_INFO}_ERROR`,
-// 				payload: { errorCode: error.code, errorMsg: error.message }
-// 			});
-// 		});
-// };
+	if (!userId && user) {
+		userId = user.uid;
+	}
+
+	if (!userId) return;
+
+	const db = getDatabase();
+	const dbRef = ref(db);
+
+	get(child(dbRef, `users/${userId}`))
+		.then((snapshot) => {
+			if (snapshot.exists()) {
+				const data = snapshot.val();
+				console.log(data);
+				dispatch({
+					type: `${GET_USER_INFO}_SUCCESS`,
+					payload: { data, userId }
+				});
+			} else {
+				dispatch({
+					type: `${GET_USER_INFO}_ERROR`,
+					payload: {
+						errorCode: 404,
+						errorMsg: 'User info not found or is not updated yet.'
+					}
+				});
+			}
+		})
+		.catch((error) => {
+			console.error(error);
+			dispatch({
+				type: `${GET_USER_INFO}_ERROR`,
+				payload: { errorCode: error.code, errorMsg: error.message }
+			});
+		});
+};

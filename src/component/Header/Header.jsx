@@ -32,7 +32,7 @@ function Header() {
 	const [drawer, setDrawer] = useState(false);
 
 	const theme = useTheme();
-	const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
 	React.useEffect(() => {
 		dispatch(getUser());
@@ -114,7 +114,7 @@ function Header() {
 
 			<Dialog
 				fullScreen={fullScreen}
-				maxWidth="md"
+				maxWidth="sm"
 				fullWidth
 				open={auth}
 				onClose={handleClose}
