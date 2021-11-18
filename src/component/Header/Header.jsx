@@ -42,6 +42,7 @@ function Header() {
 
 	const openLink = (category) => {
 		navigate(`/shopping/${category}`);
+		setDrawer(!drawer);
 	};
 
 	const openProd = (category, prodId) => {
@@ -64,8 +65,8 @@ function Header() {
 		setAuth(false);
 	};
 
-	const toggleDrawer = () => {
-		setDrawer(!drawer);
+	const toggleDrawer = (open) => {
+		setDrawer(open);
 	};
 
 	return (
@@ -79,7 +80,7 @@ function Header() {
 							border: 'none',
 							background: 'none'
 						}}
-						onClick={toggleDrawer}
+						onClick={() => toggleDrawer(true)}
 					>
 						<MenuIcon sx={{ color: 'white' }} fontSize="large" />
 					</Box>
@@ -87,6 +88,7 @@ function Header() {
 						component="div"
 						sx={{ display: { xs: 'none', md: 'flex' } }}
 						className={styles.headerMenu}
+						onClick={() => navigate('/')}
 					>
 						<span>
 							<img src="/Logo2.png" className={styles.logo} />
@@ -130,7 +132,7 @@ function Header() {
 				</DialogContent>
 			</Dialog>
 
-			<Drawer anchor="left" open={drawer} onClose={toggleDrawer}>
+			<Drawer anchor="left" open={drawer} onClose={() => toggleDrawer(false)}>
 				<MenuList direction="column" showPageTitle showIcon linkTo={openLink} />
 			</Drawer>
 		</React.Fragment>

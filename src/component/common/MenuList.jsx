@@ -1,5 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
+
 import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -8,15 +10,18 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import styles from './styles.module.css';
 
 export default function MenuList(props) {
+	const navigate = useNavigate();
+
 	return (
 		<List component={Stack} direction={props.direction} spacing={2}>
 			{props.showPageTitle && (
 				<>
 					<ListItem disablePadding>
-						<ListItemButton>
+						<ListItemButton onClick={() => navigate('/')}>
 							<ListItemIcon>
 								<img src="/Logo2.png" className={styles.logo} />
 							</ListItemIcon>

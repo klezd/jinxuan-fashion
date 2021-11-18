@@ -3,6 +3,7 @@ import ReduxThunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 
 import userReducer from './reducer/userReducer';
+import dataReducer from './reducer/dataReducer';
 
 const isDevEnv = window.location.href.includes('localhost');
 
@@ -11,7 +12,8 @@ export const middlewares = [promise, ReduxThunk];
 let enhancer;
 
 const rootReducer = combineReducers({
-	user: userReducer
+	user: userReducer,
+	data: dataReducer
 });
 
 if (isDevEnv) {

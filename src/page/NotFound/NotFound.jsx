@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 
-function Cart(props) {
+function NotFound(props) {
 	// const navigate = useNavigate();
 	// const dispatch = useDispatch();
 
@@ -9,7 +9,7 @@ function Cart(props) {
 	// 	dispatch(getUser());
 	// }, []);
 
-	return <div className={styles.root}>Cart</div>;
+	return <div className={styles.root}>Page Not Found</div>;
 }
 
-export default Cart;
+export default NotFound;

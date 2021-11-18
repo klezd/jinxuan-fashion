@@ -13,8 +13,16 @@ import {
 	faMale,
 	faBolt
 } from '@fortawesome/free-solid-svg-icons';
-import Main from './page/Main';
+
+import Layout from './page/Layout';
+import Home from './page/Home';
+import Products from './page/ProductsByCategory';
+import Product from './page/Product';
+import Cart from './page/Cart';
+import NotFound from './page/NotFound';
+
 import theme from './utils/theme';
+
 import './App.css';
 
 library.add(
@@ -35,7 +43,20 @@ function App() {
 			<div className="App">
 				<Router>
 					<Routes>
-						<Route path="/" element={<Main />}></Route>
+						<Route path="/" element={<Layout />}>
+							<Route index element={<Home />} />
+							<Route path="/shopping">
+								<Route path="/shopping/:category">
+									<Route index element={<Products />} />
+									<Route
+										path="/shopping/:category:prodId"
+										element={<Product />}
+									/>
+								</Route>
+							</Route>
+							<Route path="/cart" element={<Cart />} />
+							<Route path="*" element={<NotFound />} />
+						</Route>
 					</Routes>
 				</Router>
 			</div>

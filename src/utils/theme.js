@@ -9,14 +9,18 @@ const theme = createTheme({
 			contrastText: '#654F32'
 		},
 		secondary: {
-			main: '#d7ccc8',
-			dark: '#a69b97',
-			light: '#fffffb',
-			contrastText: '#3e2723'
+			main: '#A05FD3',
+			dark: '#8837C8',
+			light: '#B887DE',
+			contrastText: '#ADDE87'
 		},
 		white: {
 			main: '#fff',
 			contrastText: '#000'
+		},
+		bold: {
+			main: '#E1341E',
+			contrastText: '#fff'
 		}
 	}
 });
