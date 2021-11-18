@@ -11,14 +11,14 @@
 	height: 100%;
 	width: 100%;
 	cursor: pointer;
-	border: 1px solid rgba(00,0,0,0);
+	border: 1px solid rgba(0, 0, 0, 0);
 	border-radius: 3px;
 	transition: all linear 0.25s;
 	box-shadow: rgba(0, 0, 0, 0) 1.95px 1.95px 2.6px;
 }
 
 .productItem:hover {
-	border-color: rgba(00,0,0,0.25);
+	border-color: rgba(0, 0, 0, 0.25);
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
@@ -48,7 +48,6 @@
 	align-items: center;
 }
 
-
 .titleHolder .price {
 	font-weight: 800;
 }
@@ -59,18 +58,17 @@
 	right: 0px;
 	left: 0px;
 	bottom: 0px;
-	background-color: rgba(0,0,0,0.15);
+	background-color: rgba(0, 0, 0, 0.15);
 	align-items: center;
 	justify-content: center;
 	display: none;
 	flex-direction: column;
-	padding: 12px
+	padding: 12px;
 }
 
 .hover > button {
 	margin: 3px;
 }
-
 
 .productItem:hover > .hover {
 	display: flex;

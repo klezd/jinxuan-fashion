@@ -47,7 +47,6 @@ function Home(/* props */) {
 				<Paper sx={{ boxShadow: 0 }}>
 					{categories.map((c, index) => {
 						const products = productsByCategory[c];
-						console.log(products);
 						return (
 							<Box
 								key={`products_in_${c.replaceAll(' ', '')}_${index}`}

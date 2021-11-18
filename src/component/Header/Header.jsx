@@ -40,11 +40,6 @@ function Header() {
 
 	React.useEffect(() => {}, []);
 
-	const openLink = (category) => {
-		navigate(`/shopping/${category}`);
-		setDrawer(!drawer);
-	};
-
 	const openProd = (category, prodId) => {
 		navigate(`/shopping/${category}/${prodId}`);
 	};
@@ -76,23 +71,16 @@ function Header() {
 					<Box
 						component="button"
 						sx={{
-							display: { xs: 'block', md: 'none' },
+							display: { xs: 'flex', md: 'none' },
 							border: 'none',
-							background: 'none'
+							background: 'none',
+							alignItems: 'center',
+							justifyContent: 'space-between'
 						}}
 						onClick={() => toggleDrawer(true)}
 					>
 						<MenuIcon sx={{ color: 'white' }} fontSize="large" />
-					</Box>
-					<Box
-						component="div"
-						sx={{ display: { xs: 'none', md: 'flex' } }}
-						className={styles.headerMenu}
-						onClick={() => navigate('/')}
-					>
-						<span>
-							<img src="/Logo2.png" className={styles.logo} />
-						</span>
+						&nbsp;
 						<Typography
 							variant="h6"
 							component="div"
@@ -100,7 +88,30 @@ function Header() {
 						>
 							JinXuan
 						</Typography>
-						<MenuList direction="row" linkTo={openLink} />
+					</Box>
+					<Box
+						component="div"
+						sx={{ display: { xs: 'none', md: 'flex' } }}
+						className={styles.headerMenu}
+					>
+						<div onClick={() => navigate('/')}>
+							<span>
+								<img src="/Logo2.png" className={styles.logo} />
+							</span>
+							<Typography
+								variant="h6"
+								component="div"
+								sx={{ fontWeight: 'bold' }}
+							>
+								JinXuan
+							</Typography>
+						</div>
+						<MenuList
+							direction="row"
+							showPageTitle={false}
+							showIcon={false}
+							toggleDrawer={toggleDrawer}
+						/>
 					</Box>
 
 					<div className={styles.appBtn}>
@@ -133,7 +144,12 @@ function Header() {
 			</Dialog>
 
 			<Drawer anchor="left" open={drawer} onClose={() => toggleDrawer(false)}>
-				<MenuList direction="column" showPageTitle showIcon linkTo={openLink} />
+				<MenuList
+					direction="column"
+					showPageTitle
+					showIcon
+					toggleDrawer={toggleDrawer}
+				/>
 			</Drawer>
 		</React.Fragment>
 	);

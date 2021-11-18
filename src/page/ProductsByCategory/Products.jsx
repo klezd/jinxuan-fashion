@@ -21,7 +21,7 @@ function Products(props) {
 
 	React.useEffect(() => {
 		dispatch(getProductsByCategory(category));
-	}, []);
+	}, [category]);
 
 	const openProduct = (id) => navigate(`/shopping/${category}/${id}`);
 

@@ -16,12 +16,18 @@ import styles from './styles.module.css';
 export default function MenuList(props) {
 	const navigate = useNavigate();
 
+	const openLink = (link) => {
+		console.log(link);
+		navigate(link);
+		if(props.direction !== 'row')	props.toggleDrawer(false);
+	};
+
 	return (
-		<List component={Stack} direction={props.direction} spacing={2}>
+		<List component={Stack} direction={{ xs: 'column', md: 'row' }} spacing={2}>
 			{props.showPageTitle && (
 				<>
 					<ListItem disablePadding>
-						<ListItemButton onClick={() => navigate('/')}>
+						<ListItemButton onClick={() => openLink('/')}>
 							<ListItemIcon>
 								<img src="/Logo2.png" className={styles.logo} />
 							</ListItemIcon>
@@ -33,7 +39,9 @@ export default function MenuList(props) {
 			)}
 
 			<ListItem disablePadding>
-				<ListItemButton onClick={() => props.linkTo('women%27s%20clothing')}>
+				<ListItemButton
+					onClick={() => openLink('/shopping/women%27s%20clothing')}
+				>
 					{props.showIcon && (
 						<ListItemIcon>
 							<FontAwesomeIcon icon="female" />
@@ -41,14 +49,16 @@ export default function MenuList(props) {
 					)}
 					<ListItemText
 						primary={
-							props.direction === 'row' ? 'Woman' : <>Woman &apos;s clothing</>
+							props.direction === 'row' ? 'Women' : <>Women &apos;s clothing</>
 						}
 					/>
 				</ListItemButton>
 			</ListItem>
 
 			<ListItem disablePadding>
-				<ListItemButton onClick={() => props.linkTo('men%27s%20clothing')}>
+				<ListItemButton
+					onClick={() => openLink('/shopping/men%27s%20clothing')}
+				>
 					{props.showIcon && (
 						<ListItemIcon>
 							<FontAwesomeIcon icon="male" />
@@ -56,14 +66,14 @@ export default function MenuList(props) {
 					)}
 					<ListItemText
 						primary={
-							props.direction === 'row' ? 'Main' : <>Main &apos;s clothing</>
+							props.direction === 'row' ? 'Man' : <>Man &apos;s clothing</>
 						}
 					/>
 				</ListItemButton>
 			</ListItem>
 
 			<ListItem disablePadding>
-				<ListItemButton onClick={() => props.linkTo('gem')}>
+				<ListItemButton onClick={() => openLink('/shopping/jewelery')}>
 					{props.showIcon && (
 						<ListItemIcon>
 							<FontAwesomeIcon icon="gem" />
@@ -74,7 +84,7 @@ export default function MenuList(props) {
 			</ListItem>
 
 			<ListItem disablePadding>
-				<ListItemButton onClick={() => props.linkTo('electronics')}>
+				<ListItemButton onClick={() => openLink('/shopping/electronics')}>
 					{props.showIcon && (
 						<ListItemIcon>
 							<FontAwesomeIcon icon="bolt" />
@@ -90,13 +100,12 @@ export default function MenuList(props) {
 MenuList.propTypes = {
 	showPageTitle: PropTypes.bool,
 	showIcon: PropTypes.bool,
-	linkTo: PropTypes.func,
-	direction: PropTypes.oneOf(['row', 'column'])
+	direction: PropTypes.oneOf(['row', 'column']),
+	toggleDrawer: PropTypes.func.isRequired
 };
 
 MenuList.defaultProps = {
 	showPageTitle: false,
 	showIcon: false,
-	linkTo: () => {},
 	direction: 'row'
 };
