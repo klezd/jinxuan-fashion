@@ -1,28 +1,24 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/system/Box';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-
-import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
 import PersonIcon from '@mui/icons-material/Person';
 import CartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { getUser } from '../../store/action/userAction';
-import Auth from '../AuthBox/Auth';
-import styles from './styles.module.css';
 import MenuList from '../common/MenuList';
+import Dialog from '../common/Dialog';
+import Auth from '../AuthBox/Auth';
+import CartDialog from '../../page/Cart/CartDialog';
+
+import { getUser } from '../../store/action/userAction';
+import styles from './styles.module.css';
 
 function Header() {
 	const navigate = useNavigate();
@@ -30,9 +26,6 @@ function Header() {
 	const [auth, setAuth] = useState(false);
 	const [cart, setCart] = useState(false);
 	const [drawer, setDrawer] = useState(false);
-
-	const theme = useTheme();
-	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
 	React.useEffect(() => {
 		dispatch(getUser());
@@ -62,6 +55,10 @@ function Header() {
 
 	const toggleDrawer = (open) => {
 		setDrawer(open);
+	};
+
+	const payment = () => {
+		closeCart();
 	};
 
 	return (
@@ -125,22 +122,34 @@ function Header() {
 				</Toolbar>
 			</AppBar>
 
+			<Dialog open={auth} handleClose={handleClose} label="Auth-dialog">
+				<Auth />
+			</Dialog>
 			<Dialog
-				fullScreen={fullScreen}
-				maxWidth="sm"
-				fullWidth
-				open={auth}
-				onClose={handleClose}
-				aria-labelledby="auth-form"
+				open={cart}
+				handleClose={closeCart}
+				label="Cart-dialog"
+				title="Cart"
+				footerAction={
+					<React.Fragment>
+						<Button
+							variant="contained"
+							onClick={() => payment()}
+							sx={{ margin: 2, marginTop: 0 }}
+						>
+							Proceed To Pay
+						</Button>
+						<Button
+							variant="contained"
+							onClick={() => closeCart()}
+							sx={{ margin: 2, marginTop: 0 }}
+						>
+							Close
+						</Button>
+					</React.Fragment>
+				}
 			>
-				<DialogActions>
-					<IconButton aria-label="close" onClick={handleClose}>
-						<CloseIcon />
-					</IconButton>
-				</DialogActions>
-				<DialogContent>
-					<Auth />
-				</DialogContent>
+				<CartDialog />
 			</Dialog>
 
 			<Drawer anchor="left" open={drawer} onClose={() => toggleDrawer(false)}>

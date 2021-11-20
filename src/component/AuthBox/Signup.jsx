@@ -26,14 +26,13 @@ function Signup(props) {
 	const handleChange = (e, type) => {
 		if (type === 'name') {
 			setName(e.target.value);
-		}else		if (type === 'email') {
+		} else if (type === 'email') {
 			setEmail(e.target.value);
 		} else if (type === 'password') {
 			setPassword(e.target.value);
 		} else {
 			setRePassword(e.target.value);
 			if (password !== e.target.value) {
-				console.log(password + ' ' + repassword);
 				setError('Your password are not matched!');
 			} else if (password.length === 0) {
 				setReady(false);

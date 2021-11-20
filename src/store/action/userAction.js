@@ -35,7 +35,6 @@ export const signup = (displayName, email, password) => async (dispatch) => {
 			.then((res) => {
 				// Signed in
 				const user = res.user;
-				console.log(user);
 				// const token = res._tokenResponse.refreshToken;
 				dispatch({
 					type: `${SIGNUP}_SUCCESS`,
@@ -135,8 +134,6 @@ export const loginWithExternalService = (type, platform) => {
 			.then(() => {
 				return signInWithPopup(auth, provider)
 					.then((result) => {
-						console.log(result);
-						console.log(provider);
 						// token for providers
 						let credential = null;
 						credential =
@@ -240,7 +237,7 @@ export const unauthorizeUser = () => (dispatch) => {
 export const getUser = () => (dispatch) => {
 	const auth = getAuth();
 	const user = auth.currentUser;
-	localStorage.setItem('user', user);
+	user && localStorage.setItem('user', user);
 	dispatch({
 		type: GET_USER,
 		payload: { user }
@@ -261,7 +258,6 @@ export function addUserInfo(info = infoDefault) {
 			type: `${ADD_USER_INFO}_PENDING`
 		});
 		const auth = getAuth();
-		console.log(auth);
 
 		const userId = auth.currentUser.uid;
 		const db = getDatabase();
@@ -292,7 +288,6 @@ export const getUserInfo = (id) => (dispatch) => {
 	let userId = id;
 	const auth = getAuth();
 	const user = auth.currentUser;
-	console.log(auth);
 
 	userId = auth.currentUser.uid;
 
@@ -309,7 +304,6 @@ export const getUserInfo = (id) => (dispatch) => {
 		.then((snapshot) => {
 			if (snapshot.exists()) {
 				const data = snapshot.val();
-				console.log(data);
 				dispatch({
 					type: `${GET_USER_INFO}_SUCCESS`,
 					payload: { data, userId }

@@ -4,6 +4,7 @@ import promise from 'redux-promise-middleware';
 
 import userReducer from './reducer/userReducer';
 import dataReducer from './reducer/dataReducer';
+import cartReducer from './reducer/cartReducer';
 
 const isDevEnv = window.location.href.includes('localhost');
 
@@ -13,7 +14,8 @@ let enhancer;
 
 const rootReducer = combineReducers({
 	user: userReducer,
-	data: dataReducer
+	data: dataReducer,
+	cart: cartReducer
 });
 
 if (isDevEnv) {

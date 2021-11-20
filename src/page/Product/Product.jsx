@@ -6,7 +6,10 @@ import Box from '@mui/system/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import StarIcon from '@mui/icons-material/Star';
+import AddToCart from '../../component/common/AddToCartBtn';
 import { getProduct } from '../../store/action/dataAction';
+import { addProductToCart } from '../../store/action/cartAction';
+
 import styles from './styles.module.css';
 
 function Product(props) {
@@ -34,31 +37,44 @@ function Product(props) {
 		);
 	}
 
-	const { title, image, category, description, rating } = product;
+	const { id, title, image, category, description, rating, price } = product;
 
-	const descriptionContent = description.split('/').map((c, i) => <p key={'content_' + i}>{c}</p>)
+	const onAddToCart = (amount) => {
+		dispatch(addProductToCart({ id, title, image, price }, amount));
+	};
+
+	const descriptionContent = description
+		.split(' / ')
+		.map((c, i) => <p key={'content_' + i}>{c}</p>);
+	// const descriptionContent = description;
 
 	return (
 		<Paper className={styles.root}>
 			<Box className={styles.productHolder}>
-				<Box className={styles.image}>
-					<img src={image} />
-				</Box>
-				
-				<Box className={styles.prodDetail}>
-				<Typography variant="h5">{title}</Typography>
-				<Box className={styles.description}>{descriptionContent}</Box>
-				<Box className={styles.rating}>
-					<Box>Category: {category}</Box>
-					<Box className={styles.ratingBox}>
-						<span>Rate: {rating.rate} <StarIcon color="yellow" /></span>
-						<span>{'(over '} <b>{rating.count}</b> {' reviewers)'}</span>
+				<Box className={styles.left}>
+					<Box className={styles.image}>
+						<img src={image} />
+					</Box>
+					<Box className={styles.productAction}>
+						<AddToCart onAddToCart={onAddToCart} fullWidth={false} />
 					</Box>
 				</Box>
+
+				<Box className={styles.prodDetail}>
+					<Typography variant="h5">{title}</Typography>
+					<Box className={styles.description}>{descriptionContent}</Box>
+					<Box className={styles.rating}>
+						<Box>Category: {category}</Box>
+						<Box className={styles.ratingBox}>
+							<span>
+								Rate: {rating.rate} <StarIcon color="yellow" />
+							</span>
+							<span>
+								{'(over '} <b>{rating.count}</b> {' reviewers)'}
+							</span>
+						</Box>
+					</Box>
 				</Box>
-			</Box>
-			<Box className={styles.productAction}>
-				
 			</Box>
 		</Paper>
 	);

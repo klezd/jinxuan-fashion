@@ -73,3 +73,9 @@
 .productItem:hover > .hover {
 	display: flex;
 }
+
+.dialogForm {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

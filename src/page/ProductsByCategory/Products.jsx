@@ -8,6 +8,7 @@ import Paper from '@mui/material/Paper';
 
 import ProductItem from '../../component/common/ProductItem';
 import { getProductsByCategory } from '../../store/action/dataAction';
+import { addProductToCart } from '../../store/action/cartAction';
 import styles from './styles.module.css';
 
 function Products(props) {
@@ -25,6 +26,9 @@ function Products(props) {
 	}, [category]);
 
 	const openProduct = (id) => navigate(`/shopping/${category}/${id}`);
+	const addToCart = (product, amount) => {
+		dispatch(addProductToCart(product, amount));
+	};
 
 	return (
 		<Paper className={styles.root}>
@@ -40,6 +44,7 @@ function Products(props) {
 									item={p}
 									key={`${idx}_${p.id}_${p.title.replaceAll(' ', '_')}`}
 									onClick={() => openProduct(p.id)}
+									onAddToCart={addToCart}
 								/>
 							);
 						})}

@@ -16,7 +16,6 @@ export const getFromAPI =
 
 			if (res.ok) {
 				const json = await res.json();
-				console.log(json);
 				return dispatch({
 					type: `${type}_SUCCESS`,
 					payload: {

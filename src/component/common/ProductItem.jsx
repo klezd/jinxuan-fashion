@@ -3,25 +3,30 @@ import PropTypes from 'prop-types';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 
+import AddToCartBtn from './AddToCartBtn';
 import styles from './styles.module.css';
 
 export default function ProductItem(props) {
-	const { item, onClick, onAddToCart} = props;
-	const { image, title, price } = item;
-	const addToCart = (e) => {
-		e.preventDefault();
-		onAddToCart();
-	}
+	const { item, onClick, onAddToCart } = props;
+	const { id, image, title, price } = item;
+
+	const addToCart = (amount) => {
+		onAddToCart({ id, image, title, price }, amount);
+	};
 
 	return (
-		<Box className={styles.productItem} >
+		<Box className={styles.productItem}>
 			<div className={styles.hover}>
-				<Button className={styles.addCartBtn} fullWidth variant="contained" color="bold" onClick={onClick}>
-				 	Open Item
+				<Button
+					className={styles.addCartBtn}
+					fullWidth
+					variant="contained"
+					color="dark"
+					onClick={onClick}
+				>
+					Open Item
 				</Button>
-				<Button className={styles.addCartBtn} fullWidth variant="contained" color="bold" onClick={addToCart}>
-					Add To Cart
-				</Button>
+				<AddToCartBtn onAddToCart={addToCart} />
 			</div>
 			<div className={styles.image}>
 				<img src={image}></img>
@@ -37,8 +42,7 @@ export default function ProductItem(props) {
 ProductItem.propTypes = {
 	item: PropTypes.object.isRequired,
 	onClick: PropTypes.func,
-	onAddToCart: PropTypes.func,
-	
+	onAddToCart: PropTypes.func
 };
 
 ProductItem.defaultProps = {

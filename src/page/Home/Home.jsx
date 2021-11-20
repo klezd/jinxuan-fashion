@@ -11,6 +11,8 @@ import {
 	getAllCategories,
 	getProductsWithLimit
 } from '../../store/action/dataAction';
+import { addProductToCart } from '../../store/action/cartAction';
+
 import styles from './styles.module.css';
 import ProductItem from '../../component/common/ProductItem';
 import { Link } from '@mui/material';
@@ -39,6 +41,10 @@ function Home(/* props */) {
 
 	const openProduct = (c, id) => navigate(`/shopping/${c}/${id}`);
 
+	const addToCart = (product, amount) => {
+		dispatch(addProductToCart(product, amount));
+	};
+
 	return (
 		<Container className={styles.root}>
 			{!loading &&
@@ -64,6 +70,7 @@ function Home(/* props */) {
 													item={p}
 													key={`${idx}_${p.id}_${p.title.replaceAll(' ', '_')}`}
 													onClick={() => openProduct(c, p.id)}
+													onAddToCart={addToCart}
 												/>
 											);
 										})
