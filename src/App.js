@@ -49,7 +49,7 @@ function App() {
 								<Route path="/shopping/:category">
 									<Route index element={<Products />} />
 									<Route
-										path="/shopping/:category:prodId"
+										path="/shopping/:category/:prodId"
 										element={<Product />}
 									/>
 								</Route>

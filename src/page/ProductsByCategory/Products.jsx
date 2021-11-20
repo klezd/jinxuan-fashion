@@ -18,6 +18,7 @@ function Products(props) {
 	const category = params.category;
 
 	const products = useSelector((s) => s.data.products[category]);
+	const loading = useSelector((s) => s.data.dataLoading);
 
 	React.useEffect(() => {
 		dispatch(getProductsByCategory(category));
@@ -43,8 +44,10 @@ function Products(props) {
 							);
 						})}
 					</Box>
-				) : (
+				) : loading ? (
 					<> Loading . . . </>
+				) : (
+					<> There are no items currently available ! </>
 				)}
 			</Container>
 		</Paper>

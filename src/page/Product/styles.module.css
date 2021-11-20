@@ -1,2 +1,58 @@
 .root {
+	box-shadow: none !important;
+}
+
+.productHolder {
+  display: grid;
+  box-shadow: none !important;
+	grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  padding-top: 36px;
+}
+
+.productHolder div {
+  padding: 12px;
+  width: 100%;
+}
+
+.image {
+  max-width: 300px;
+}
+
+.description {
+  text-align: left;
+    padding-right: 12px;
+
+}
+
+.image > img {
+  width: 100%;
+}
+
+.rating {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-transform: capitalize;
+}
+
+.rating > div {
+  padding: 0 !important;
+  text-align: left;
+}
+
+.ratingBox {
+  display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	text-transform: capitalize;
+  flex-direction: column;
+  padding-right: 12px;
+}
+
+@media screen and (max-width: 800px) {
+.image {
+  max-width: 300px
+
+}
+
 }

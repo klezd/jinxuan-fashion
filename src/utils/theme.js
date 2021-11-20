@@ -21,6 +21,10 @@ const theme = createTheme({
 		bold: {
 			main: '#E1341E',
 			contrastText: '#fff'
+		},
+		yellow: {
+			main: '#FFCB2B',
+			contrastText: '#000'
 		}
 	}
 });
