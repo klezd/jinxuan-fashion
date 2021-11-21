@@ -16,6 +16,7 @@ import MenuList from '../common/MenuList';
 import Dialog from '../common/Dialog';
 import Auth from '../AuthBox/Auth';
 import CartDialog from '../../page/Cart/CartDialog';
+import HideOnScroll from './HideOnScroll';
 
 import { getUser } from '../../store/action/userAction';
 import styles from './styles.module.css';
@@ -65,38 +66,22 @@ function Header() {
 
 	return (
 		<React.Fragment>
-			<AppBar>
-				<Toolbar className={styles.appbar}>
-					<Box
-						component="button"
-						sx={{
-							display: { xs: 'flex', md: 'none' },
-							border: 'none',
-							background: 'none',
-							alignItems: 'center',
-							justifyContent: 'space-between'
-						}}
-						onClick={() => toggleDrawer(true)}
-					>
-						<MenuIcon sx={{ color: 'white' }} fontSize="large" />
-						&nbsp;
-						<Typography
-							variant="h6"
-							component="div"
-							sx={{ fontWeight: 'bold' }}
+			<HideOnScroll>
+				<AppBar>
+					<Toolbar className={styles.appbar}>
+						<Box
+							component="button"
+							sx={{
+								display: { xs: 'flex', md: 'none' },
+								border: 'none',
+								background: 'none',
+								alignItems: 'center',
+								justifyContent: 'space-between'
+							}}
+							onClick={() => toggleDrawer(true)}
 						>
-							JinXuan
-						</Typography>
-					</Box>
-					<Box
-						component="div"
-						sx={{ display: { xs: 'none', md: 'flex' } }}
-						className={styles.headerMenu}
-					>
-						<div onClick={() => navigate('/')}>
-							<span>
-								<img src="/Logo2.png" className={styles.logo} />
-							</span>
+							<MenuIcon sx={{ color: 'white' }} fontSize="large" />
+							&nbsp;
 							<Typography
 								variant="h6"
 								component="div"
@@ -104,25 +89,43 @@ function Header() {
 							>
 								JinXuan
 							</Typography>
-						</div>
-						<MenuList
-							direction="row"
-							showPageTitle={false}
-							showIcon={false}
-							toggleDrawer={toggleDrawer}
-						/>
-					</Box>
+						</Box>
+						<Box
+							component="div"
+							sx={{ display: { xs: 'none', md: 'flex' } }}
+							className={styles.headerMenu}
+						>
+							<div onClick={() => navigate('/')}>
+								<span>
+									<img src="/Logo2.png" className={styles.logo} />
+								</span>
+								<Typography
+									variant="h6"
+									component="div"
+									sx={{ fontWeight: 'bold' }}
+								>
+									JinXuan
+								</Typography>
+							</div>
+							<MenuList
+								direction="row"
+								showPageTitle={false}
+								showIcon={false}
+								toggleDrawer={toggleDrawer}
+							/>
+						</Box>
 
-					<div className={styles.appBtn}>
-						<div onClick={openCart}>
-							<CartIcon />
+						<div className={styles.appBtn}>
+							<div onClick={openCart}>
+								<CartIcon />
+							</div>
+							<div onClick={openAuth}>
+								<PersonIcon />
+							</div>
 						</div>
-						<div onClick={openAuth}>
-							<PersonIcon />
-						</div>
-					</div>
-				</Toolbar>
-			</AppBar>
+					</Toolbar>
+				</AppBar>
+			</HideOnScroll>
 
 			<Dialog open={auth} handleClose={handleClose} label="Auth-dialog">
 				<Auth />
