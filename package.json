@@ -46,6 +46,12 @@
 		"prepare": "husky install",
 		"pretty-code": "git status -s -u | xargs npx prettier --write"
 	},
+	"husky": {
+		"hooks": {
+			"pre-push": "npm run lint-fix",
+			"pre-commit": "npm run pretty-code"
+		}
+	},
 	"eslintConfig": {
 		"extends": [
 			"react-app",
