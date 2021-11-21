@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
-import Box from '@mui/system/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,8 +11,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 
 import CloseIcon from '@mui/icons-material/Close';
-
-import styles from './styles.module.css';
 
 export default function CDialog(props) {
 	const { footerAction, children, handleClose, open, label, title, width } =

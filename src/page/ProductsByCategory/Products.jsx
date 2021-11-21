@@ -11,7 +11,7 @@ import { getProductsByCategory } from '../../store/action/dataAction';
 import { addProductToCart } from '../../store/action/cartAction';
 import styles from './styles.module.css';
 
-function Products(props) {
+function Products() {
 	const navigate = useNavigate();
 	const params = useParams();
 	const dispatch = useDispatch();

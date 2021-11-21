@@ -19,7 +19,7 @@ export default function MenuList(props) {
 	const openLink = (link) => {
 		console.log(link);
 		navigate(link);
-		if(props.direction !== 'row')	props.toggleDrawer(false);
+		if (props.direction !== 'row') props.toggleDrawer(false);
 	};
 
 	return (

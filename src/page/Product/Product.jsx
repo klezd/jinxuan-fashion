@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/system/Box';
@@ -12,8 +12,7 @@ import { addProductToCart } from '../../store/action/cartAction';
 
 import styles from './styles.module.css';
 
-function Product(props) {
-	const navigate = useNavigate();
+function Product() {
 	const params = useParams();
 	const dispatch = useDispatch();
 
@@ -46,7 +45,6 @@ function Product(props) {
 	const descriptionContent = description
 		.split(' / ')
 		.map((c, i) => <p key={'content_' + i}>{c}</p>);
-	// const descriptionContent = description;
 
 	return (
 		<Paper className={styles.root}>

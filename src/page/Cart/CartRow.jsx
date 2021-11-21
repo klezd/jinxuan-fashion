@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Box from '@mui/system/Box';
 import InputBase from '@mui/material/InputBase';
@@ -13,8 +13,7 @@ import styles from './styles.module.css';
 import {
 	addProductToCart,
 	removeProductFromCart,
-	setProductInCart,
-	updatePrice
+	setProductInCart
 } from '../../store/action/cartAction';
 
 function CartRow(props) {
