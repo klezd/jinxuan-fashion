@@ -7,10 +7,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
 
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import CloseIcon from '@mui/icons-material/Close';
 
 import Dialog from './Dialog';
 import styles from './styles.module.css';
@@ -46,8 +44,6 @@ export default function AddToCart(props) {
 
 		setNoti(false);
 	};
-
-	// console.log('noti ', noti, ' ', error);
 
 	return (
 		<Box sx={{ width: '100%', textAlign: 'left' }}>
@@ -88,7 +84,7 @@ export default function AddToCart(props) {
 					</Button>
 				</Box>
 			</Dialog>
-			<Snackbar open={noti} autoHideDuration={2000} onClose={closeNoti}>
+			<Snackbar open={noti} autoHideDuration={3500} onClose={closeNoti}>
 				<Alert
 					severity={error === null ? 'success' : 'error'}
 					sx={{ width: '100%' }}

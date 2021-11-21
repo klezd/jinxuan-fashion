@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import AppBar from '@mui/material/AppBar';
@@ -33,10 +33,6 @@ function Header() {
 
 	React.useEffect(() => {}, []);
 
-	const openProd = (category, prodId) => {
-		navigate(`/shopping/${category}/${prodId}`);
-	};
-
 	const openCart = () => {
 		setCart(true);
 	};
@@ -58,6 +54,12 @@ function Header() {
 	};
 
 	const payment = () => {
+		alert('To be updated');
+		closeCart();
+	};
+
+	const openCartPage = () => {
+		navigate('/cart');
 		closeCart();
 	};
 
@@ -134,6 +136,13 @@ function Header() {
 					<React.Fragment>
 						<Button
 							variant="contained"
+							onClick={() => openCartPage()}
+							sx={{ margin: 2, marginTop: 0 }}
+						>
+							Open Cart
+						</Button>
+						<Button
+							variant="contained"
 							onClick={() => payment()}
 							sx={{ margin: 2, marginTop: 0 }}
 						>
@@ -149,7 +158,7 @@ function Header() {
 					</React.Fragment>
 				}
 			>
-				<CartDialog />
+				<CartDialog emptyAction={closeCart} />
 			</Dialog>
 
 			<Drawer anchor="left" open={drawer} onClose={() => toggleDrawer(false)}>

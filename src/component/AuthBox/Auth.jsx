@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import PropTypes from 'prop-types';
 import Box from '@mui/system/Box';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -10,8 +9,7 @@ import AuthBox from './AuthBox';
 import styles from './styles.module.css';
 import { signout } from '../../store/action/userAction';
 
-function Auth(props) {
-	// const {logged} = props;
+function Auth() {
 	const isLogged = useSelector((s) => s.user.isLogged);
 	const dispatch = useDispatch();
 
@@ -64,11 +62,3 @@ function Auth(props) {
 }
 
 export default Auth;
-
-Auth.propTypes = {
-	// logged: PropTypes.bool
-};
-
-Auth.defaultProps = {
-	// logged: false
-};
