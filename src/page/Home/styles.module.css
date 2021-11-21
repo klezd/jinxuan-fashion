@@ -18,7 +18,7 @@
 	grid-template-columns: 1fr 1fr;
 	margin-top: 24px;
 	margin-bottom: 12px;
-  grid-gap: 30px;
+	grid-gap: 30px;
 }
 
 .productItem {
@@ -58,4 +58,13 @@
 
 .titleHolder .price {
 	font-weight: 800;
+}
+
+@media screen and (max-width: 460px) {
+	.productHolder {
+		display: block;
+	}
+	.products {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
 }

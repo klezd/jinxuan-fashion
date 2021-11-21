@@ -35,6 +35,9 @@ function Product() {
 			</Paper>
 		);
 	}
+	if (pid !== product.id) {
+		return <> Loading . . . </>;
+	}
 
 	const { id, title, image, category, description, rating, price } = product;
 

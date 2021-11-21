@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
 import Fab from '@mui/material/Fab';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
@@ -24,9 +24,9 @@ function Main(props) {
 
 			<Toolbar id="back-to-top-anchor" />
 
-			<Container>
+			<Paper sx={{ boxShadow: 0, padding: 2 }}>
 				<Outlet />
-			</Container>
+			</Paper>
 
 			{/* <ScrollTo {...props} idTo="back-to-top-anchor">
 				<Fab color="primary" size="small" aria-label="scroll back to top">

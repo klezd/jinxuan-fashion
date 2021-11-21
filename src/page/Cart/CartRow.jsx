@@ -30,20 +30,20 @@ function CartRow(props) {
 	const [prodAmount, setAmount] = useState(amount);
 
 	const addOneAmount = () => {
-		setAmount(prodAmount + 1);
+		setAmount(parseInt(prodAmount) + 1);
 		dispatch(addProductToCart(product, 1));
 		// dispatch(updatePrice());
 	};
 	const minusOneAmount = () => {
-		setAmount(prodAmount - 1);
+		setAmount(parseInt(prodAmount) - 1);
 		dispatch(removeProductFromCart(product, 1));
 	};
 	const setProduct = () => {
-		dispatch(setProductInCart(product, prodAmount));
+		dispatch(setProductInCart(product, parseInt(prodAmount)));
 	};
 	const removeFromCart = () => {
 		setAmount(0);
-		dispatch(removeProductFromCart(product, prodAmount));
+		dispatch(removeProductFromCart(product, parseInt(prodAmount)));
 	};
 
 	return (
