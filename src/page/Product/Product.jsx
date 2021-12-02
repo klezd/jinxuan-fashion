@@ -35,7 +35,7 @@ function Product() {
 			</Paper>
 		);
 	}
-	if (pid !== product.id) {
+	if (pid.toString() !== product.id.toString()) {
 		return <> Loading . . . </>;
 	}
 
